@@ -5,8 +5,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Getter
-@Setter
+@Getter // kõikidele muutujatele get funktsioonid ---- getHind()
+@Setter // kõikidele muutujatele set funktsioonid ---- setAktiivne()
 @AllArgsConstructor
 public class Toode {
     private int id;

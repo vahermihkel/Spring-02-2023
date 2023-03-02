@@ -64,7 +64,7 @@ public class ParcelMachineController {
         }
 
         response.setOmnivaPMs(omniva);
-        
+
 
         return response;
     }

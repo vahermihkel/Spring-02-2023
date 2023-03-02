@@ -1,9 +1,7 @@
-package ee.mihkel.cardgame;
+package ee.mihkel.cardgame.game;
 
 import lombok.Getter;
 import lombok.Setter;
-
-import java.util.Random;
 
 @Getter
 @Setter

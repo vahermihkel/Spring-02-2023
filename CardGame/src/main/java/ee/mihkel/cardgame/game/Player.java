@@ -1,4 +1,4 @@
-package ee.mihkel.cardgame;
+package ee.mihkel.cardgame.game;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;

@@ -1,5 +1,7 @@
-package ee.mihkel.webshop;
+package ee.mihkel.webshop.controller;
 
+import ee.mihkel.webshop.repository.ProductRepository;
+import ee.mihkel.webshop.model.Product;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,7 +31,7 @@ public class ProductController {
 
     @PostMapping("product")
     public List<Product> addProduct(@RequestBody Product product) {
-        if (productRepository.findById(product.getId()).isEmpty()) {
+        if (product.getId() == null || productRepository.findById(product.getId()).isEmpty()) {
             productRepository.save(product);
         }
         return productRepository.findAll();

@@ -1,7 +1,7 @@
 package ee.mihkel.webshop.controller;
 
 import ee.mihkel.webshop.repository.ProductRepository;
-import ee.mihkel.webshop.model.Product;
+import ee.mihkel.webshop.model.database.Product;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

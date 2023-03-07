@@ -1,6 +1,6 @@
 package ee.mihkel.webshop.controller;
 
-import ee.mihkel.webshop.model.Category;
+import ee.mihkel.webshop.model.database.Category;
 import ee.mihkel.webshop.repository.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

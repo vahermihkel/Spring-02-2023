@@ -1,4 +1,4 @@
-package ee.mihkel.webshop.model;
+package ee.mihkel.webshop.model.database;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

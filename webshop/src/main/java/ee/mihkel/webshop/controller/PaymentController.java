@@ -8,6 +8,7 @@ import ee.mihkel.webshop.model.request.EverypayResponse;
 import ee.mihkel.webshop.model.request.EverypayStatus;
 import ee.mihkel.webshop.repository.OrderRepository;
 import ee.mihkel.webshop.repository.PersonRepository;
+import ee.mihkel.webshop.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
@@ -28,10 +29,7 @@ public class PaymentController {
     RestTemplate restTemplate;
 
     @Autowired
-    PersonRepository personRepository;
-
-    @Autowired
-    OrderRepository orderRepository;
+    OrderService orderService;
 
     @Value("${everypay.url}") // import mitte lombokist
     private String everypayUrl;
@@ -53,25 +51,19 @@ public class PaymentController {
             @PathVariable String personalCode,
             @RequestBody List<Product> products) {
 
-        Person person = personRepository.findById(personalCode).get();
+        double totalSum = orderService.calculateTotalSum(products);
 
-        Order order = new Order();
-        order.setOrderProducts(products);
-        order.setPaid(false);
-        order.setPerson(person);
-        order.setCreated(new Date());
-        order.setTotalSum(123);
-        Order dbOrder = orderRepository.save(order);
+        Long orderId = orderService.saveOrder(personalCode, products, totalSum);
 
         String url = everypayUrl + "payments/oneoff";
 
         EverypayData everypayData = new EverypayData();
         everypayData.setApi_username(username);
         everypayData.setAccount_name(account);
-        everypayData.setAmount(123); // teeme arvutuse, mis on kogusumma forEach tsükli + stream
+        everypayData.setAmount(totalSum); // teeme arvutuse, mis on kogusumma forEach tsükli + stream
         //  ei võta iga toote juurest summat, mis tuleb Bodyst, vaid tsükli sees pöördun ID-ga andmebaasi poole ja võtan
         //    andmebaasist originaalse toote ja tema küljest hinna
-        everypayData.setOrder_reference(dbOrder.getId().toString()); // Teeme Tellimuste andmebaasimudeli ja sisestama Tellimuse ENNE
+        everypayData.setOrder_reference(orderId.toString()); // Teeme Tellimuste andmebaasimudeli ja sisestama Tellimuse ENNE
         // maksma hakkamist andmebaasi, sest siis saan ID. Märgin et pole makstud
         // Kui makse toimub ära, siis märgin makstuks
         everypayData.setNonce("asdsads" + new Date() + Math.random());
@@ -113,10 +105,7 @@ public class PaymentController {
 
         if (body != null) {
             if (body.getPayment_state().equals("settled")) {
-               Long orderId = Long.parseLong(body.getOrder_reference());
-               Order order = orderRepository.findById(orderId).get();
-               order.setPaid(true);
-               orderRepository.save(order);
+               orderService.changeOrderToPaid(body.getOrder_reference());
             }
 
             everypayStatus.setPayment_state(body.getPayment_state());

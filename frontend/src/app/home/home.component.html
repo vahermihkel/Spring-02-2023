@@ -1,0 +1,26 @@
+<div>Showing following country parcelmachines: {{ country }}</div>
+
+<!-- <div>{{ parcelMachines | json }}</div> -->
+
+<!-- for(Product p: products ) -->
+
+<button (click)="changeCountry('ee')">Estonia</button>
+<button (click)="changeCountry('lv')">Latvia</button>
+<button (click)="changeCountry('lt')">Lithuania</button>
+
+
+<select>
+  <option *ngFor="let pm of parcelMachines.omnivaPMs">{{ pm.NAME }}</option>
+</select>
+
+<select *ngIf="parcelMachines.smartpostPMs.length > 0">
+  <option *ngFor="let pm of parcelMachines.smartpostPMs">{{ pm.name }}</option>
+</select>
+
+<div *ngFor="let p of products">
+  <div>{{ p.id }}</div>
+  <div>{{ p.name }}</div>
+  <div>{{ p.price }}</div>
+  <div>{{ p.active }}</div>
+  <button>Lisa ostukorvi</button>
+</div>

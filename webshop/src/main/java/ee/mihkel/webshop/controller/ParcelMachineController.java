@@ -26,7 +26,7 @@ public class ParcelMachineController {
     RestTemplate restTemplate;
 
     @GetMapping("parcelmachines/{country}")
-    public ParcelMachineResponse getParcelMachines(@PathVariable String country) {
+    public ResponseEntity<ParcelMachineResponse> getParcelMachines(@PathVariable String country) {
         country = country.toUpperCase();
 
         String omnivaUrl = "https://www.omniva.ee/locations.json";
@@ -74,7 +74,7 @@ public class ParcelMachineController {
         response.setOmnivaPMs(omniva);
 
 
-        return response;
+        return ResponseEntity.ok().body(response);
     }
 
 }

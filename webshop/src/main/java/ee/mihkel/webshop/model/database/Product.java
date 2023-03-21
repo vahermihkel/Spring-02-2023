@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.ColumnDefault;
 
 @Getter
 @Setter
@@ -20,6 +21,9 @@ public class Product {
     private double price;
     private String image;
     private boolean active;
+
+    @ColumnDefault("0")
+    private int stock;
 
     @ManyToOne
      private Category category;

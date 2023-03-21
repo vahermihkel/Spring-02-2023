@@ -9,6 +9,7 @@ import ee.mihkel.webshop.model.request.EverypayStatus;
 import ee.mihkel.webshop.repository.OrderRepository;
 import ee.mihkel.webshop.repository.PersonRepository;
 import ee.mihkel.webshop.service.OrderService;
+import ee.mihkel.webshop.service.PaymentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
@@ -26,57 +27,23 @@ import java.util.List;
 public class PaymentController {
 
     @Autowired
-    RestTemplate restTemplate;
-
-    @Autowired
     OrderService orderService;
 
-    @Value("${everypay.url}") // import mitte lombokist
-    private String everypayUrl;
-
-    @Value("${everypay.username}") // import mitte lombokist
-    private String username;
-
-    @Value("${everypay.account}") // import mitte lombokist
-    private String account;
-
-    @Value("${everypay.authorization}") // import mitte lombokist
-    private String authorization;
-
-    @Value("${everypay.customerUrl}") // import mitte lombokist
-    private String customerUrl;
+    @Autowired
+    PaymentService paymentService;
 
     @PostMapping("payment/{personalCode}") // MAKSA
-    public EverypayResponse makePayment(
+    public ResponseEntity<EverypayResponse> makePayment(
             @PathVariable String personalCode,
             @RequestBody List<Product> products) {
 
-        double totalSum = orderService.calculateTotalSum(products);
+        List<Product> dbProducts = orderService.getDbProducts(products);
 
-        Long orderId = orderService.saveOrder(personalCode, products, totalSum);
+        double totalSum = orderService.calculateTotalSum(dbProducts);
 
-        String url = everypayUrl + "payments/oneoff";
+        Long orderId = orderService.saveOrder(personalCode, dbProducts, totalSum);
 
-        EverypayData everypayData = new EverypayData();
-        everypayData.setApi_username(username);
-        everypayData.setAccount_name(account);
-        everypayData.setAmount(totalSum); // teeme arvutuse, mis on kogusumma forEach tsükli + stream
-        //  ei võta iga toote juurest summat, mis tuleb Bodyst, vaid tsükli sees pöördun ID-ga andmebaasi poole ja võtan
-        //    andmebaasist originaalse toote ja tema küljest hinna
-        everypayData.setOrder_reference(orderId.toString()); // Teeme Tellimuste andmebaasimudeli ja sisestama Tellimuse ENNE
-        // maksma hakkamist andmebaasi, sest siis saan ID. Märgin et pole makstud
-        // Kui makse toimub ära, siis märgin makstuks
-        everypayData.setNonce("asdsads" + new Date() + Math.random());
-        everypayData.setTimestamp(ZonedDateTime.now().toString());
-        everypayData.setCustomer_url(customerUrl);
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.set(HttpHeaders.AUTHORIZATION,authorization);
-        HttpEntity<EverypayData> httpEntity = new HttpEntity<>(everypayData,headers);
-
-        ResponseEntity<EverypayResponse> response = restTemplate.exchange(url, HttpMethod.POST,httpEntity, EverypayResponse.class );
-
-        return response.getBody(); // PAYMENT_LINK ----> Front-end läheb sellele lingile
+        return ResponseEntity.ok().body(paymentService.getEveryPayLink(totalSum, orderId)); // PAYMENT_LINK ----> Front-end läheb sellele lingile
     }
 
     // PÄRING TULEB AADRESSILE TAGASI NII MAKSTUD KUI MAKSMATA STAATUSEGA
@@ -87,33 +54,21 @@ public class PaymentController {
     // https://maksmine.web.app/makse <---- suunab EveryPay
     // Front-end teeb lehele tulemise ajal koheselt päringu check-payment-status/60f8950b4395d
     @PatchMapping("check-payment-status/{paymentReference}")
-    public EverypayStatus checkPaymentStatus(@PathVariable String paymentReference) {
-        // /payments/d2b859a4d60f8950b4395dcaecfdffe0720ce2a1113d66abd5c89de56eaa45dd?api_username=92ddcfab96e34a5f
-        // "https://igw-demo.every-pay.com/api/v4/payments/d2b859a4d60f8950b4395dcaecfdffe0720ce2a1113d66abd5c89de56eaa45dd?api_username=92ddcfab96e34a5f"
-        String url = everypayUrl + "payments/" + paymentReference + "?api_username=" + username;
+    public ResponseEntity<EverypayStatus> checkPaymentStatus(@PathVariable String paymentReference) {
 
-        EverypayStatus everypayStatus = new EverypayStatus();
+        EverypayStatus everypayStatus = paymentService.getPaymentStatus(paymentReference);
 
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.set(HttpHeaders.AUTHORIZATION, authorization);
-
-        HttpEntity<String> httpEntity = new HttpEntity<>(null, httpHeaders);
-
-        ResponseEntity<EverypayStatus> response = restTemplate.exchange(url, HttpMethod.GET,httpEntity, EverypayStatus.class);
-
-        EverypayStatus body = response.getBody();
-
-        if (body != null) {
-            if (body.getPayment_state().equals("settled")) {
-               orderService.changeOrderToPaid(body.getOrder_reference());
+        if (everypayStatus != null) {
+            if (everypayStatus.getPayment_state().equals("settled")) {
+               orderService.changeOrderToPaid(everypayStatus.getOrder_reference());
             }
 
-            everypayStatus.setPayment_state(body.getPayment_state());
-            everypayStatus.setOrder_reference(body.getOrder_reference());
+            everypayStatus.setPayment_state(everypayStatus.getPayment_state());
+            everypayStatus.setOrder_reference(everypayStatus.getOrder_reference());
         }
 
 
-        return everypayStatus; // NÄITAB FRONT-ENDIS PUNAST VÕI ROHELIST
+        return ResponseEntity.ok().body(everypayStatus); // NÄITAB FRONT-ENDIS PUNAST VÕI ROHELIST
     }
 
     // muutust andmebaasis PATCH (paid)

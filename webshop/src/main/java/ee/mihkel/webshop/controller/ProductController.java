@@ -3,6 +3,10 @@ package ee.mihkel.webshop.controller;
 import ee.mihkel.webshop.repository.ProductRepository;
 import ee.mihkel.webshop.model.database.Product;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -15,34 +19,61 @@ public class ProductController {
     ProductRepository productRepository;
 
     @GetMapping("product")
-    public List<Product> getProducts() {
-        return productRepository.findAll();
+    public ResponseEntity<Page<Product>> getProducts(Pageable pageable) {
+        return ResponseEntity.ok().body(productRepository.findAllByActiveAndStockGreaterThan(true,0,pageable));
+    }
+
+    @GetMapping("admin-products")
+    public ResponseEntity<List<Product>> getAdminProducts() {
+        return ResponseEntity.ok().body(productRepository.findAllByOrderById());
     }
 
     @GetMapping("product/{id}")
-    public Product getProduct(@PathVariable Long id) {
-        return productRepository.findById(id).get();
+    public ResponseEntity<Product> getProduct(@PathVariable Long id) {
+        return ResponseEntity.ok().body(productRepository.findById(id).get());
     }
 
     @DeleteMapping("product/{id}")
-    public List<Product> deleteProduct(@PathVariable Long id) {
+    public ResponseEntity<List<Product>> deleteProduct(@PathVariable Long id) {
         productRepository.deleteById(id);
-        return productRepository.findAll();
+        return ResponseEntity.ok().body(productRepository.findAllByOrderById());
     }
 
     @PostMapping("product")
-    public List<Product> addProduct(@RequestBody Product product) {
+    public ResponseEntity<List<Product>> addProduct(@RequestBody Product product) {
         if (product.getId() == null || productRepository.findById(product.getId()).isEmpty()) {
             productRepository.save(product);
         }
-        return productRepository.findAll();
+        return ResponseEntity.status(HttpStatus.CREATED).body(productRepository.findAllByOrderById());
     }
 
     @PutMapping("product")
-    public List<Product> editProduct(@RequestBody Product product) {
+    public ResponseEntity<List<Product>> editProduct(@RequestBody Product product) {
         if (productRepository.findById(product.getId()).isPresent()) {
             productRepository.save(product);
         }
-        return productRepository.findAll();
+        return ResponseEntity.ok().body(productRepository.findAllByOrderById());
     }
+
+
+    @PatchMapping("add-stock/{id}")
+    public ResponseEntity<List<Product>> addStock(@PathVariable Long id) {
+        Product product = productRepository.findById(id).get();
+        int newStock = product.getStock()+1;
+        product.setStock(newStock);
+        productRepository.save(product);
+        return ResponseEntity.ok().body(productRepository.findAllByOrderById());
+    }
+
+    @PatchMapping("decrease-stock/{id}")
+    public ResponseEntity<List<Product>> decreaseStock(@PathVariable Long id) {
+        Product product = productRepository.findById(id).get();
+        if (product.getStock() > 0) {
+            int newStock = product.getStock()-1;
+            product.setStock(newStock);
+            productRepository.save(product);
+        }
+        return ResponseEntity.ok().body(productRepository.findAllByOrderById());
+    }
+
 }

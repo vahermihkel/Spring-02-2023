@@ -2,10 +2,7 @@ package ee.mihkel.nordpool2;
 
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
 import java.text.SimpleDateFormat;
@@ -15,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:4200")
 public class NordpoolController {
     // https://dashboard.elering.ee/api/nps/price
 

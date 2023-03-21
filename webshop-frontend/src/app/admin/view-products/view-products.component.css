@@ -1,0 +1,11 @@
+.active {
+  border: 1px solid green;
+}
+
+.inactive {
+  border: 1px solid red;
+}
+
+.product-img {
+  width: 100px;
+}

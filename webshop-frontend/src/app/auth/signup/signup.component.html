@@ -1,0 +1,16 @@
+<div>{{ error }}</div>
+
+<div class="signup-form-wrapper">
+  <form (ngSubmit)="onSignUp(form)" #form="ngForm">
+    <label>Email</label> <br>
+    <input class="form-control" ngModel name="email" type="text"> <br>
+    <label>Password</label> <br>
+    <input class="form-control" ngModel name="password" type="password"> <br>
+    <button class="btn btn-primary">Registreeru</button>
+  </form>
+</div>
+
+<lib-toastify-toast-container
+  [autoClose]="3000"
+  [position]="'bottom-right'"
+></lib-toastify-toast-container>

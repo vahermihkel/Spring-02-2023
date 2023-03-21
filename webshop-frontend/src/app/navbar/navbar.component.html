@@ -1,0 +1,26 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <div class="container-fluid">
+    <a class="navbar-brand" routerLink="/"> <img src="assets/Webshio.png" alt=""> </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+      <div class="navbar-nav">
+        <a class="nav-link" *ngIf="loggedIn === true" routerLink="/admin">{{ "nav.admin-button" | translate }}</a>
+        <a class="nav-link" routerLink="/poed"> <img class="lang" src="assets/shop.png" alt=""> {{ "nav.shops-button" | translate }}</a>
+        <a class="nav-link" *ngIf="loggedIn === false" routerLink="/logi-sisse"> <img class="lang" src="assets/login.png" alt=""> {{ "nav.login-button" | translate }}</a>
+        <a class="nav-link" *ngIf="!loggedIn" routerLink="/registreeru"><img class="lang" src="assets/signup.png" alt=""> {{ "nav.signup-button" | translate }}</a>
+        <a class="nav-link" *ngIf="loggedIn" (click)="onLogout()">{{ "nav.logout-button" | translate }}</a>
+      </div>
+    </div>
+    <div class="cart-link" routerLink="/ostukorv">
+      <span>{{ sumOfCart | thousandSeparator }} </span>
+      <img src="assets/cart.png" alt="">
+    </div>
+    <div class="languages">
+      <img class="lang" src="assets/uk.png" alt="" (click)="useLanguage('en')">
+      <img class="lang" src="assets/estonia.png" alt="" (click)="useLanguage('ee')"> 
+      <img class="lang" src="assets/russia.png" alt="" (click)="useLanguage('ru')">
+    </div>
+  </div>
+</nav>

@@ -34,7 +34,7 @@ export class HomeComponent {
   }
 
   private getProducts() {
-    this.http.get<any>("http://localhost:8080/product",).subscribe(res =>
+    this.http.get<any>("http://localhost:8080/product").subscribe(res =>
       this.products = res
     );
   }

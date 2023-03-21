@@ -1,0 +1,12 @@
+
+<form (ngSubmit)="onSubmit(addCarouselPicForm)" #addCarouselPicForm="ngForm">
+  <label>Galerii pildi ID</label> <br>
+  <input ngModel name="imgName" type="text" required> <br>
+  <button [disabled]="addCarouselPicForm.invalid">SISESTA</button> <br>
+</form>
+
+<br><br>
+
+<div *ngFor="let image of images">
+  {{image.imgName}} <button (click)="onDeleteImg(image)">X</button>
+</div>

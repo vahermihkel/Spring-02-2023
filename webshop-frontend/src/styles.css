@@ -1,0 +1,21 @@
+/* You can add global styles to this file, and also import other style files */
+
+/* .btn-danger {
+  background-color: #ff2800;
+}
+
+.btn-danger:hover {
+  background-color: #d02000;
+}
+
+.btn-danger:active {
+  background-color: #f36a52;
+} */
+
+.bg-light {
+  background-color: rgb(244, 244, 252) !important;
+}
+
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

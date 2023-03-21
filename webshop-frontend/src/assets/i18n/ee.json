@@ -1,0 +1,13 @@
+{
+  "nav.admin-button": "Administraatori vaatesse",
+  "nav.shops-button": "Poed",
+  "nav.login-button": "Logi sisse",
+  "nav.signup-button": "Registreeru",
+  "nav.logout-button": "Logi välja",
+  "home.all-categories": "Kõik kategooriad",
+  "Edukalt ": "Edukalt ",
+  " ostukorvi lisatud": " ostukorvi lisatud",
+  "Lisa ": "Lisa ",
+  " ostukorvi": " ostukorvi",
+  "form.invalidEmail": "Vigane e-mail"
+}

@@ -1,0 +1,21 @@
+<app-carousel-gallery></app-carousel-gallery>
+
+<app-filter-bar
+  class="sidenav"
+  *ngIf="products.length > 0"
+  [products]="products"
+  [originalProducts]="originalProducts"
+></app-filter-bar>
+
+<div class="main">
+  <app-sort-buttons [productsToBeSorted]="products"></app-sort-buttons>
+
+  <div class="items-wrapper">
+      <app-product-card *ngFor="let p of products" class="item" [product]="p"></app-product-card>
+  </div>
+</div>
+
+<lib-toastify-toast-container
+  [autoClose]="1000"
+  [position]="'bottom-right'"
+></lib-toastify-toast-container>

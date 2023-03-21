@@ -1,0 +1,19 @@
+.active-circle {
+  height: 30px;
+  width: 30px;
+  border-radius: 50%;
+}
+
+.active-checkbox {
+  visibility: hidden;
+}
+
+.line {
+  position: relative;
+  top: 15px;
+  left: 10px;
+  height: 2px;
+  width: 50px;
+  background-color: blue;
+  z-index: -1;
+}

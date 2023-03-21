@@ -1,0 +1,10 @@
+<img class="cart-item-pic" src="{{cartProduct.product.imgSrc}}" alt="">
+<div class="cart-item-name">{{ cartProduct.product.name }}</div>
+<div class="cart-item-price">{{ cartProduct.product.price | thousandSeparator }}</div>
+<div>
+    <img *ngIf="cartProduct.product.id !== 11110000" class="cart-button" (click)="decreaseQuantityEvent.emit(cartProduct)" src="assets/cart/minus.png" />
+    <span class="cart-item-quantity">{{ cartProduct.quantity }} tk</span>
+    <img *ngIf="cartProduct.product.id !== 11110000" class="cart-button" (click)="increaseQuantityEvent.emit(cartProduct)" src="assets/cart/plus.png" />
+</div>
+<div class="cart-item-total">{{ (cartProduct.product.price * cartProduct.quantity) | thousandSeparator }}</div>
+<img *ngIf="cartProduct.product.id !== 11110000" class="cart-button" (click)="removeFromCartEvent.emit(cartProduct)" src="assets/cart/delete.png" />

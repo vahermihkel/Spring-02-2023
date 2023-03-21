@@ -1,0 +1,27 @@
+<form (ngSubmit)="onSubmit(addProductForm)" #addProductForm="ngForm">
+    <label>Nimi</label> <br>
+    <input ngModel name="name" type="text" required> <br>
+    <label>Hind</label> <br>
+    <input ngModel name="price" type="number" required> <br>
+    <label>Kategooria</label> <br>
+    <select ngModel name="category">
+        <option 
+            *ngFor="let category of categories" 
+            value="{{category.categoryName}}">
+            {{category.categoryName}}
+        </option>
+    </select> <br>
+    <label>Kirjeldus</label> <br>
+    <textarea class="form-control" extendInput ngModel name="description" type="text" required></textarea>        <br>
+    <label>Pilt</label> <br>
+    <input ngModel name="imgSrc" type="text" required> <br>
+    <br>
+    <label>Aktiivne</label> <br>
+    <div class="line"></div>
+    <label class="active-circle" [@productActive]="isActive ? 'active' : 'inactive'">
+        <input class="active-checkbox" ngModel name="active" type="checkbox" (click)="toggle()"> <br>
+    </label>
+    <br>
+    <button [disabled]="addProductForm.invalid">SISESTA</button>
+</form>
+<br>

@@ -56,21 +56,21 @@ public class GameService {
             lives--;
             if (lives == 0) {
                 finishAndSaveGame();
-                return "Game over!";
+                return "over";
             }
-            return "Not answered in 10 seconds!";
+            return "slow";
         }
         Card newCard = new Card();
         String response;
         if (isGuessAndValueComparisonCorrect(userGuess, newCard)) {
-            response = "Correct!";
+            response = "right";
             correctAnswers++;
         } else {
-            response = "Wrong!";
+            response = "wrong";
             lives--;
             if (lives == 0) {
                 finishAndSaveGame();
-                return "Game over!";
+                return "over";
             }
         }
         card = newCard;

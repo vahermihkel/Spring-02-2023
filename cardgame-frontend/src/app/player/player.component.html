@@ -1,0 +1,20 @@
+<br><br>
+<input [(ngModel)]="searchInput" (keyup)="searchPlayers()" type="text">
+<br><br>
+
+<div *ngFor="let p of players">
+  <span>{{ p.name }} - </span>
+  <span>{{ p.firstCreated }} - </span>
+  <span>{{ p.highScore }}</span>
+  <button (click)="getPlayerGames(p.name)">Vaata tema mänge</button>
+</div>
+<button (click)="getGames()">Näita kõiki mänge</button>
+
+<br><br><br>
+
+<div *ngFor="let g of games">
+  <span>{{ g.id }} - </span>
+  <span>{{ g.correctGuesses }} - </span>
+  <span>{{ g.duration }} - </span>
+  <span>{{ g.player?.name || "N/A" }}</span>
+</div>

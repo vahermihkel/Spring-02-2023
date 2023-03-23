@@ -1,19 +1,32 @@
 <div *ngIf="card === undefined">
   <div>Mängija nimi</div>
-  <input [(ngModel)]="name" type="text"> <br>
+  <input [(ngModel)]="name" type="text" /> <br />
   <button (click)="enterName()">Sisesta</button>
 </div>
 
-<div *ngIf="card !== undefined">
-  <div>{{card.suit}}</div>
-  <div>{{card.rank}}</div>
+<div *ngIf="card !== undefined && status === 'guess'">
+  <div>{{ card.suit }}</div>
+  <img *ngIf="card.suit === 'SPADE'" src="assets/spade.png" alt="">
+  <div>{{ card.rank }}</div>
 
   <button (click)="guess('lower')">Madalam</button>
   <button (click)="guess('higher')">Kõrgem</button>
   <button (click)="guess('equal')">Võrdne</button>
 </div>
 
-<div>ÕIGE</div>
-<div>VÄÄR</div>
-<div>MÄNG LÄBI!</div>
-<button>Järgmine kaart</button>
+<div *ngIf="status === 'right'">ÕIGE</div>
+<div *ngIf="status === 'wrong'">VÄÄR</div>
+<div *ngIf="status === 'slow'">SA EI VASTANUD 10 SEKUNDIGA</div>
+<div *ngIf="status === 'over'">
+  MÄNG LÄBI!
+  <button (click)="newGame()">Uus mäng</button>
+</div>
+
+<button 
+  *ngIf="status === 'right' || 
+  status === 'wrong' || 
+  status === 'slow'"
+  (click)="newRound()"
+  >
+  Järgmine kaart
+</button>

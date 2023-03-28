@@ -4,6 +4,6 @@
 
 <div *ngFor="let category of categories"
   class="category"
-  (click)="onFilterByCategory(category)"
-  [ngClass]="{'category-selected': category === selectedCategory}"
-  >{{ category }}</div>
+  (click)="onFilterByCategory(category.name)"
+  [ngClass]="{'category-selected': category.name === selectedCategory}"
+  >{{ category.name }}</div>

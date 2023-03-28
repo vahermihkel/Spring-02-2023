@@ -14,11 +14,11 @@
     <label>Kirjeldus</label> <br>
     <textarea class="form-control" extendInput ngModel name="description" type="text" required></textarea>        <br>
     <label>Pilt</label> <br>
-    <input ngModel name="imgSrc" type="text" required> <br>
+    <input ngModel name="image" type="text" required> <br>
     <br>
     <label>Aktiivne</label> <br>
     <div class="line"></div>
-    <label class="active-circle" [@productActive]="isActive ? 'active' : 'inactive'">
+    <label class="active-circle" [@productActive]="active ? 'active' : 'inactive'">
         <input class="active-checkbox" ngModel name="active" type="checkbox" (click)="toggle()"> <br>
     </label>
     <br>

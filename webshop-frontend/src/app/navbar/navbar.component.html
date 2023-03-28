@@ -6,11 +6,11 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
       <div class="navbar-nav">
-        <a class="nav-link" *ngIf="loggedIn === true" routerLink="/admin">{{ "nav.admin-button" | translate }}</a>
+        <a class="nav-link" *ngIf="loggedIn === true" routerLink="/admin"> <img class="lang" src="assets/security.png" alt=""> {{ "nav.admin-button" | translate }}</a>
         <a class="nav-link" routerLink="/poed"> <img class="lang" src="assets/shop.png" alt=""> {{ "nav.shops-button" | translate }}</a>
         <a class="nav-link" *ngIf="loggedIn === false" routerLink="/logi-sisse"> <img class="lang" src="assets/login.png" alt=""> {{ "nav.login-button" | translate }}</a>
         <a class="nav-link" *ngIf="!loggedIn" routerLink="/registreeru"><img class="lang" src="assets/signup.png" alt=""> {{ "nav.signup-button" | translate }}</a>
-        <a class="nav-link" *ngIf="loggedIn" (click)="onLogout()">{{ "nav.logout-button" | translate }}</a>
+        <a class="nav-link" *ngIf="loggedIn" (click)="onLogout()"><img class="lang" src="assets/log-out.png" alt=""> {{ "nav.logout-button" | translate }}</a>
       </div>
     </div>
     <div class="cart-link" routerLink="/ostukorv">

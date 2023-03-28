@@ -65,4 +65,8 @@ export class CartComponent implements OnInit {
     this.sumOfCart = 0;
     this.cartProducts.forEach(element => this.sumOfCart += element.product.price * element.quantity);
   }
+
+  onPay() {
+    //MAKSE BACKENDI
+  }
 }

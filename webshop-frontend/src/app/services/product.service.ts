@@ -27,4 +27,10 @@ export class ProductService {
   updateProductsInDb(updatedProducts: Product[]) {
     return this.http.put(this.dbUrl, updatedProducts);
   }
+
+  // TODO: Delete product from backend
+
+  // TODO: Get one product from backend
+
+  // TODO: Edit one product from backend
 }

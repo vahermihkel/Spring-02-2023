@@ -9,7 +9,7 @@ import * as L from 'leaflet';
   styleUrls: ['./shops.component.css']
 })
 export class ShopsComponent implements OnInit, AfterViewInit  {
-  dbUrl = "https://webshop-03-22-default-rtdb.europe-west1.firebasedatabase.app/shops.json";
+  dbUrl = "";
   shops: {shopName: string, 
     latitude: number, 
     longitude: number, openTimes: string}[] = [];
@@ -21,17 +21,14 @@ export class ShopsComponent implements OnInit, AfterViewInit  {
   }
 
   ngAfterViewInit(): void {
-    this.http.get<{shopName: string, 
-      latitude: number, 
-      longitude: number, openTimes: string}[]>(this.dbUrl).subscribe(shopsFromDb => {
-      const newArray = [];
-      for (const key in shopsFromDb) {
-        newArray.push(shopsFromDb[key]);
-      }
-      this.shops = newArray;
-      this.mapComponent.initMap();
-      this.mapComponent.shopsObservable.next(this.shops);
-    });
+    // TODO: Get images from backend
+    // this.http.get<{shopName: string, 
+    //   latitude: number, 
+    //   longitude: number, openTimes: string}[]>(this.dbUrl).subscribe(shopsFromDb => {
+    //   this.shops = shopsFromDb;
+    //   this.mapComponent.initMap();
+    //   this.mapComponent.shopsObservable.next(this.shops);
+    // });
   }
 
   onZoomShop(shopName: string) {

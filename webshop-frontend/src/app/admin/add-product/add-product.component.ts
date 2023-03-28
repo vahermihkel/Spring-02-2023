@@ -25,52 +25,27 @@ import { ProductService } from 'src/app/services/product.service';
   ],
 })
 export class AddProductComponent implements OnInit {
-  // productId!: number;
-  // products: Product[] = [];
-  // idUnique = false;
-  categories: {categoryName: string}[] = [];
-  // selectedFile!: File;
-  
-  isActive = false;
+  categories: {categoryName: string}[] = [];  
+  active = false;
 
   toggle() {
-    this.isActive = !this.isActive;
+    this.active = !this.active;
   }
 
   constructor(private productService: ProductService,
     private categoryService: CategoryService) { }
 
   ngOnInit(): void {
-    this.categoryService.getCategoriesFromDb().subscribe(categoriesFromDb => {
-      const newArray = [];
-      for (const key in categoriesFromDb) {
-        newArray.push(categoriesFromDb[key]);
-      }
-      this.categories = newArray;
-    });
-
-    // this.productService.getProductsFromDb().subscribe(response => { 
-    //   this.products = response;
-    // }); 
+    // TODO: Get categories from backend
+    // this.categoryService.getCategoriesFromDb().subscribe(categoriesFromDb => {
+    //   this.categories = categoriesFromDb;
+    // });
   }
-
-  // onCheckIdUniqueness() {
-  //   const index = this.products.findIndex(element => element.id === this.productId );
-  //   if (index >= 0) {
-  //     this.idUnique = false;
-  //   } else {
-  //     this.idUnique = true;
-  //   }
-  // }
-
-  // handleFileInput(event: any) {
-  //   this.selectedFile = <File>event.target.files[0];
-  // }
 
   onSubmit(addProductForm: NgForm) {
     const val = addProductForm.value;
-    const newProduct = new Product(val.id, val.name, val.url, val.price, val.category,
-      val.description, val.active);
+    const newProduct = new Product(val.id, val.name, val.url, val.price,
+      val.description, val.active, 0, val.category);
     this.productService.addProductToDb(newProduct).subscribe();
     addProductForm.reset();
   }

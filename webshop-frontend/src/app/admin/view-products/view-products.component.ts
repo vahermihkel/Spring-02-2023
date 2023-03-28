@@ -31,8 +31,8 @@ export class ViewProductsComponent implements OnInit {
   }
 
   onChangeProductActive(product: Product) {
-    product.isActive = !product.isActive;
-    this.productService.updateProductsInDb(this.products).subscribe();
+    product.active = !product.active;
+    // TODO: Edit one product from backend
   }
 
 }

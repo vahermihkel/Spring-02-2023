@@ -16,7 +16,7 @@ export class AuthGuard implements CanActivateChild {
     | UrlTree
     | Promise<boolean | UrlTree>
     | Observable<boolean | UrlTree> {
-      let isLoggedIn = sessionStorage.getItem("userData") ? true : this.router.createUrlTree(['/logi-sisse']);
+      let isLoggedIn = sessionStorage.getItem("token") ? true : this.router.createUrlTree(['/logi-sisse']);
       return isLoggedIn;
   }
 }

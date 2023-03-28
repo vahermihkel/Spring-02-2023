@@ -1,7 +1,19 @@
+.cart-top {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  margin-left: 10%;
+}
+
 .cart-item {
-    display: flex; 
-    justify-content: space-between; 
-    margin: 0 10%;
-    border-bottom: 1px solid lightgray;
-    padding: 10px 0;
-  }
+  display: flex; 
+  justify-content: space-between; 
+  margin: 0 10%;
+  border-bottom: 1px solid lightgray;
+  padding: 10px 0;
+}
+
+.cart-bottom {
+  margin-top: 10px;
+  margin-left: 80%;
+  font-size: 20px;
+}

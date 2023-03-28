@@ -1,11 +1,14 @@
+import { Category } from "./category.model";
+
 export class Product {
     constructor(
         public id: number,
         public name: string,
-        public imgSrc: string,
+        public image: string,
         public price: number,
-        public category: string,
         public description: string,
-        public isActive: boolean
+        public active: boolean,
+        public stock: number,
+        public category?: Category
     ) {}
 }

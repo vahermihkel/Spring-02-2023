@@ -12,10 +12,10 @@
   <select formControlName="category">
     <option *ngFor="let category of categories" value="{{category.categoryName}}">{{category.categoryName}}</option>
   </select> <br> <br>
-  <label>ImgSrc: </label> <br>
-  <input formControlName="imgSrc" type="text"> <br>
+  <label>Image: </label> <br>
+  <input formControlName="image" type="text"> <br>
   <label> Aktiivne:  </label> <br>
-  <input formControlName="isActive" type="checkbox"> <br>
+  <input formControlName="active" type="checkbox"> <br>
   <button>Muuda</button> <br>
  </form>
 

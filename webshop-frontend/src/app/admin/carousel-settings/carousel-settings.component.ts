@@ -8,31 +8,29 @@ import { NgForm } from '@angular/forms';
   styleUrls: ['./carousel-settings.component.css']
 })
 export class CarouselSettingsComponent implements OnInit {
-  dbUrl = "https://webshop-03-22-default-rtdb.europe-west1.firebasedatabase.app/images.json";
+  dbUrl = "";
   images: {imgName: string}[] = [];
 
   constructor(private http: HttpClient) { }
 
   ngOnInit(): void {
-    this.http.get<{imgName: string}[]>(this.dbUrl).subscribe(imagesFromDb => {
-      const newArray = [];
-      for (const key in imagesFromDb) {
-        newArray.push(imagesFromDb[key]);
-      }
-      this.images = newArray;
-    });
+    // TODO: Get images from backend
+    // this.http.get<{imgName: string}[]>(this.dbUrl).subscribe(imagesFromDb => {
+    //   this.images = imagesFromDb;
+    // });
   }
 
   onSubmit(form: NgForm) {
     const image = "https://picsum.photos/id/" + form.value.imgName + "/900/300";
-    this.http.post(this.dbUrl,{imgName: image}).subscribe(() => {
-      this.images.push({imgName: image});
-    });
+    // TODO : Send new image to backend
+    // this.http.post(this.dbUrl,{imgName: image}).subscribe(() => {
+    //   this.images.push({imgName: image});
+    // });
   }
 
   onDeleteImg(image: {imgName: string}) {
     const index = this.images.findIndex(element => element.imgName === image.imgName);
     this.images.splice(index,1);
-    this.http.put(this.dbUrl,this.images).subscribe();
+    // TODO : Delete image from backend
   }
 }

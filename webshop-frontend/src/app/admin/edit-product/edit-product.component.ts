@@ -12,8 +12,8 @@ import { ProductService } from 'src/app/services/product.service';
 })
 export class EditProductComponent implements OnInit {
   products: Product[] = [];
-  dbUrl = "https://webshop-03-22-default-rtdb.europe-west1.firebasedatabase.app/products.json";
-  categoriesDbUrl = "https://webshop-03-22-default-rtdb.europe-west1.firebasedatabase.app/categories.json";
+  dbUrl = "";
+  categoriesDbUrl = "";
 
   product!: Product;
   editProductForm!: FormGroup;
@@ -34,9 +34,7 @@ export class EditProductComponent implements OnInit {
 
   private getProductsFromDb(productId: string) {
     this.productService.getProductsFromDb().subscribe(response => { 
-      for (const key in response) {
-        this.products.push(response[key]);
-      }
+      this.products = response;
       const productFound = this.products.find(element => Number(element.id) === Number(productId));
       if (productFound) {
         this.product = productFound;
@@ -50,27 +48,24 @@ export class EditProductComponent implements OnInit {
       id: new FormControl(this.product.id),
       name: new FormControl(this.product.name),
       price: new FormControl(this.product.price),
-      imgSrc: new FormControl(this.product.imgSrc),
+      image: new FormControl(this.product.image),
       category: new FormControl(this.product.category),
       description: new FormControl(this.product.description),
-      isActive: new FormControl(this.product.isActive),
+      active: new FormControl(this.product.active)
     })
   } 
 
   private getCategoriesFromDb() {
-    this.http.get<{categoryName: string}[]>(this.categoriesDbUrl).subscribe(categoriesFromDb => {
-      const newArray = [];
-      for (const key in categoriesFromDb) {
-        newArray.push(categoriesFromDb[key]);
-      }
-      this.categories = newArray;
-    });
+    // TODO: Get categories from db
+    // this.http.get<{categoryName: string}[]>(this.categoriesDbUrl).subscribe(categoriesFromDb => {
+    //   this.categories = categoriesFromDb;
+    // });
   }
 
   onSubmit() {
     const queueNumber = this.products.indexOf(this.product);
     this.products[queueNumber] = this.editProductForm.value;
-    this.productService.updateProductsInDb(this.products).subscribe(()=>this.router.navigateByUrl("/admin/halda") );
+    // TODO: Edit product
   }
 
 }

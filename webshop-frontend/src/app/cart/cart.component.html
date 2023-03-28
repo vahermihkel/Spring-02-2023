@@ -1,4 +1,6 @@
-<div *ngIf="cartProducts.length > 0" (click)="onEmptyCart()">Tühjenda</div>
+<button
+class="cart-top btn btn-primary"
+*ngIf="cartProducts.length > 0" (click)="onEmptyCart()">Tühjenda</button>
 
 <div *ngFor="let cProduct of cartProducts">
     <app-cart-product 
@@ -10,9 +12,15 @@
         ></app-cart-product>
 </div>
 
-<div *ngIf="cartProducts.length > 0">KOKKU: {{sumOfCart}}</div>
+<div class="cart-bottom">
+    <div *ngIf="cartProducts.length > 0">KOKKU: {{sumOfCart}} €</div>
 
-<app-parcel-machines 
-    [cartProducts]="cartProducts" 
-    (calculateSumEvent)="calculateSumOfCart()"
-    (removeParcelMachineEvent)="onRemoveProduct($event)"></app-parcel-machines>
+        <app-parcel-machines 
+            [cartProducts]="cartProducts" 
+            (calculateSumEvent)="calculateSumOfCart()"
+            (removeParcelMachineEvent)="onRemoveProduct($event)"></app-parcel-machines>
+
+        <br>
+
+        <button class="btn btn-success" (click)="onPay()">Maksma</button>
+</div>

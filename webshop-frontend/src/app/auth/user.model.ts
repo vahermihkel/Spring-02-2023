@@ -1,16 +1,12 @@
 export class User {
 
   constructor(
+    public firstName: string,
+    public lastName: string,
     public email: string,
-    public id: string,
-    private _token: string,
-    private _tokenExpirationDate: Date
+    public phone: string,
+    public admin: boolean,
+    public token: string
   ) {}
   
-  get token() {
-    if (!this._tokenExpirationDate || new Date() > this._tokenExpirationDate) {
-      return null;
-    }
-    return this._token;
-  }
 }

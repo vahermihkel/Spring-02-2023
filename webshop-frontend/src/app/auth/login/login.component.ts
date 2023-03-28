@@ -31,28 +31,29 @@ export class LoginComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.authService.autoLogin();
   }
 
   onLogin(loginForm: NgForm) {
-    console.log(this.emailFormControl);
-    if (!loginForm.valid) {
-      return;
-    }
-    this.isLoading = true;
-    this.authService.login(this.emailFormControl.value, loginForm.value.password).subscribe({
-        next: () => {
-          this.error = "";
-          this.isLoading = false;
-          this.authService.loggedInChanged.next(true);
-          this.router.navigateByUrl("/admin");
-        },
-        error: (errorMessage) => {
-          this.error = errorMessage;
-          this.isLoading = false;
-        }
-      }
-    );
-    loginForm.reset();
+    this.router.navigateByUrl("/admin");
+    sessionStorage.setItem("token", "123");
+    this.authService.loggedInChanged.next(true);
+    // if (!loginForm.valid) {
+    //   return;
+    // }
+    // this.isLoading = true;
+    // this.authService.login(this.emailFormControl.value, loginForm.value.password).subscribe({
+    //     next: () => {
+    //       this.error = "";
+    //       this.isLoading = false;
+    //       this.authService.loggedInChanged.next(true);
+    //       this.router.navigateByUrl("/admin");
+    //     },
+    //     error: (errorMessage) => {
+    //       this.error = errorMessage;
+    //       this.isLoading = false;
+    //     }
+    //   }
+    // );
+    // loginForm.reset();
   }
 }

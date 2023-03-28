@@ -1,6 +1,7 @@
-import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
+import { Category } from 'src/app/models/category.model';
+import { CategoryService } from 'src/app/services/category.service';
 
 @Component({
   selector: 'app-category',
@@ -8,30 +9,38 @@ import { NgForm } from '@angular/forms';
   styleUrls: ['./category.component.css']
 })
 export class CategoryComponent implements OnInit {
-  dbUrl = "https://webshop-03-22-default-rtdb.europe-west1.firebasedatabase.app/categories.json";
-  categories: {categoryName: string}[] = [];
+  dbUrl = "";
+  categories: Category[] = [];
 
-  constructor(private http: HttpClient) { }
+  // @Autowired
+  // CategoryService categoryService;
+  constructor(private categoryService: CategoryService) { }
 
   ngOnInit(): void {
-    this.http.get<{categoryName: string}[]>(this.dbUrl).subscribe(categoriesFromDb => {
-      const newArray = [];
-      for (const key in categoriesFromDb) {
-        newArray.push(categoriesFromDb[key]);
-      }
-      this.categories = newArray;
-    });
+    // TODO: Get categories from backend
+    // this.http.get<{categoryName: string}[]>(this.dbUrl).subscribe(categoriesFromDb => {
+    //   this.categories = categoriesFromDb;
+    // });
+    this.categoryService.getCategoriesFromDb().subscribe(res => {
+      this.categories = res;
+    })
   }
 
+          // {categoryName: "teretere"};
   onSubmit(addCategoryForm: NgForm) {
-    this.http.post(this.dbUrl,addCategoryForm.value).subscribe(() => {
-      this.categories.push(addCategoryForm.value);
-    });
+    // TODO: Add category to backend
+    // this.http.post(this.dbUrl,addCategoryForm.value).subscribe(() => {
+    //   this.categories.push(addCategoryForm.value);
+    // });        // OTSE Formi väärtusi (võti-väärtus paarid) ei panegi
+    const newCategory = new Category(addCategoryForm.value.name);
+    this.categoryService.addCategoryToDb(newCategory).subscribe(res => {
+      this.categories = res;
+    })
   }
 
-  onDeleteCategory(category: {categoryName: string}) {
-    const index = this.categories.findIndex(element => element.categoryName === category.categoryName);
-    this.categories.splice(index,1);
-    this.http.put(this.dbUrl,this.categories).subscribe();
+  onDeleteCategory(category: Category) {
+    // const index = this.categories.findIndex(element => element.categoryName === category.categoryName);
+    // this.categories.splice(index,1);
+    // TODO: Delete category from backend
   }
 }

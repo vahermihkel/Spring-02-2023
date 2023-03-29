@@ -23,7 +23,7 @@
     <td (click)="onChangeProductActive(product)"><img class="product-img" src="{{product.image}}" alt=""></td>
     <td (click)="onChangeProductActive(product)">{{product.name}}</td>
     <td (click)="onChangeProductActive(product)">{{product.price | thousandSeparator}}</td>
-    <td (click)="onChangeProductActive(product)">{{product.category}}</td>
+    <td (click)="onChangeProductActive(product)">{{product.category?.name}}</td>
     <td (click)="onChangeProductActive(product)">{{product.description | descriptionShortener:descriptionWordCount}}</td>
   <button routerLink="/admin/muuda/{{product.id}}">Muuda toodet</button>
 </tr>

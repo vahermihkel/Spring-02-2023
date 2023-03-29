@@ -6,41 +6,44 @@ import { CategoryService } from 'src/app/services/category.service';
 @Component({
   selector: 'app-category',
   templateUrl: './category.component.html',
-  styleUrls: ['./category.component.css']
+  styleUrls: ['./category.component.css'],
 })
 export class CategoryComponent implements OnInit {
-  dbUrl = "";
+  dbUrl = '';
   categories: Category[] = [];
 
   // @Autowired
   // CategoryService categoryService;
-  constructor(private categoryService: CategoryService) { }
+  constructor(private categoryService: CategoryService) {}
 
   ngOnInit(): void {
     // TODO: Get categories from backend
     // this.http.get<{categoryName: string}[]>(this.dbUrl).subscribe(categoriesFromDb => {
     //   this.categories = categoriesFromDb;
     // });
-    this.categoryService.getCategoriesFromDb().subscribe(res => {
+    this.categoryService.getCategoriesFromDb().subscribe((res) => {
       this.categories = res;
-    })
+    });
   }
 
-          // {categoryName: "teretere"};
+  // {categoryName: "teretere"};
   onSubmit(addCategoryForm: NgForm) {
     // TODO: Add category to backend
     // this.http.post(this.dbUrl,addCategoryForm.value).subscribe(() => {
     //   this.categories.push(addCategoryForm.value);
     // });        // OTSE Formi väärtusi (võti-väärtus paarid) ei panegi
     const newCategory = new Category(addCategoryForm.value.name);
-    this.categoryService.addCategoryToDb(newCategory).subscribe(res => {
+    this.categoryService.addCategoryToDb(newCategory).subscribe((res) => {
       this.categories = res;
-    })
+    });
   }
 
   onDeleteCategory(category: Category) {
     // const index = this.categories.findIndex(element => element.categoryName === category.categoryName);
     // this.categories.splice(index,1);
     // TODO: Delete category from backend
+    this.categoryService.deleteCategoryFromDb(category).subscribe((res) => {
+      this.categories = res;
+    });
   }
 }

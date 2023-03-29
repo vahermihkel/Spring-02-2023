@@ -1,5 +1,6 @@
-import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+import { CarouselPicture } from 'src/app/models/carousel-picture.model';
+import { CarouselPictureService } from 'src/app/services/carousel-picture.service';
 
 @Component({
   selector: 'app-carousel-gallery',
@@ -7,16 +8,14 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./carousel-gallery.component.css']
 })
 export class CarouselGalleryComponent implements OnInit {
-  images: any[] = [];
-  dbUrl = "";
+  images: CarouselPicture[] = [];
 
-  constructor(private http: HttpClient) { }
+  constructor(private carouselPictureService: CarouselPictureService) { }
 
   ngOnInit(): void {
-    // TODO: Get images from backend
-    // this.http.get<{imgName: string}[]>(this.dbUrl).subscribe(imagesFromDb => {
-    //   this.images = imagesFromDb;
-    // });
+    this.carouselPictureService.getCarouselPictures().subscribe(res => {
+      this.images = res;
+    })
   }
 
 }

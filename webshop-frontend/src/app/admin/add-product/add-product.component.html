@@ -7,8 +7,8 @@
     <select ngModel name="category">
         <option 
             *ngFor="let category of categories" 
-            value="{{category.categoryName}}">
-            {{category.categoryName}}
+            value="{{category.id}}">
+            {{category.name}}
         </option>
     </select> <br>
     <label>Kirjeldus</label> <br>

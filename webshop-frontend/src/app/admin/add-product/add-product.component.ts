@@ -1,6 +1,7 @@
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
+import { Category } from 'src/app/models/category.model';
 import { Product } from 'src/app/models/product.model';
 import { CategoryService } from 'src/app/services/category.service';
 import { ProductService } from 'src/app/services/product.service';
@@ -25,7 +26,7 @@ import { ProductService } from 'src/app/services/product.service';
   ],
 })
 export class AddProductComponent implements OnInit {
-  categories: {categoryName: string}[] = [];  
+  categories: Category[] = [];  
   active = false;
 
   toggle() {
@@ -36,16 +37,15 @@ export class AddProductComponent implements OnInit {
     private categoryService: CategoryService) { }
 
   ngOnInit(): void {
-    // TODO: Get categories from backend
-    // this.categoryService.getCategoriesFromDb().subscribe(categoriesFromDb => {
-    //   this.categories = categoriesFromDb;
-    // });
+    this.categoryService.getCategoriesFromDb().subscribe(categoriesFromDb => {
+      this.categories = categoriesFromDb;
+    });
   }
 
   onSubmit(addProductForm: NgForm) {
     const val = addProductForm.value;
     const newProduct = new Product(val.id, val.name, val.url, val.price,
-      val.description, val.active, 0, val.category);
+      val.description, val.active, 0, new Category("", val.category));
     this.productService.addProductToDb(newProduct).subscribe();
     addProductForm.reset();
   }

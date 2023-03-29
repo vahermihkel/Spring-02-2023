@@ -27,6 +27,6 @@ export class ShopsSettingsComponent implements OnInit {
   onSubmit(form: NgForm) {
     // TODO: Add shop to db
     // this.http.post(this.dbUrl, form.value).subscribe();
-    this.shops.push(form.value);
+    // this.shops.push(form.value);
   }
 }

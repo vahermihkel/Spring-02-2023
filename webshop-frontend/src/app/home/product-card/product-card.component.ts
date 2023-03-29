@@ -27,11 +27,16 @@ export class ProductCardComponent implements OnInit {
   }
 
   onAddToCart(productClicked: Product) {
+    // const favorites = JSON.parse(localStorage.getItem("favorites") || "[]"); // <--- kui tahad kasutusele mõnes teises failis võtta
+    // favorites.push(productClicked);
+    // localStorage.setItem("favorites", JSON.stringify(favorites));
+
+
     const cartItemsSS = sessionStorage.getItem("cartItems");
     let cartItems: CartProduct[] = [];
     if (cartItemsSS) {
       cartItems = JSON.parse(cartItemsSS);
-    }                                                               3
+    }                                                               
     const index = cartItems.findIndex(element => element.product.id === productClicked.id);
     if (index >= 0) {
       cartItems[index].quantity++; 

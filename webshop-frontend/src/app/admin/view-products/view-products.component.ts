@@ -16,7 +16,7 @@ export class ViewProductsComponent implements OnInit {
   constructor(private productService: ProductService) { }
 
   ngOnInit(): void {
-    this.productService.getProductsFromDb().subscribe(response => { 
+    this.productService.getAdminProductsFromDb().subscribe(response => { 
         this.products = response;
         this.originalProducts = response;
     }); 

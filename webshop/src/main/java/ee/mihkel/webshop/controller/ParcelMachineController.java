@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:4200") // pääseb muule ligi, ülejäänutel CORS error
+//@CrossOrigin(origins = "http://localhost:4200") // pääseb muule ligi, ülejäänutel CORS error
 public class ParcelMachineController {
 
     @Autowired

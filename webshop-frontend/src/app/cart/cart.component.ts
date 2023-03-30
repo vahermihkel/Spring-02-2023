@@ -1,8 +1,8 @@
-import { HttpClient } from '@angular/common/http';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { CartProduct } from '../models/cart-product.model';
 import { ProductService } from '../services/product.service';
 import { ParcelMachinesComponent } from './parcel-machines/parcel-machines.component';
+import { PaymentService } from './payment.service';
 
 @Component({
   selector: 'app-cart',
@@ -14,7 +14,8 @@ export class CartComponent implements OnInit {
   sumOfCart = 0;
   @ViewChild(ParcelMachinesComponent) parcelMachinesComponent!: ParcelMachinesComponent;
 
-  constructor(private productService: ProductService) { } 
+  constructor(private productService: ProductService,
+    private paymentService: PaymentService) { } 
 
   ngOnInit(): void {
     const cartItemsSS = sessionStorage.getItem("cartItems");
@@ -67,6 +68,8 @@ export class CartComponent implements OnInit {
   }
 
   onPay() {
-    //MAKSE BACKENDI
+    this.paymentService.getPaymentLink(this.cartProducts).subscribe(res => {
+      window.location.href = res.payment_link;
+    });
   }
 }

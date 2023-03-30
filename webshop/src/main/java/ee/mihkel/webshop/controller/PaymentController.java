@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Iterator;
 import java.util.List;
 
 @RestController
@@ -27,11 +28,23 @@ public class PaymentController {
 
 // Map<Product, Integer> cartProducts
 
+        String pmName = "";
+        Iterator<CartRow> iterator = cartRows.iterator();
+        while (iterator.hasNext()) {
+            CartRow c = iterator.next();
+            if (c.getProduct().getId() == 11110000) {
+                pmName = c.getProduct().getName();
+                iterator.remove();
+                break;
+            }
+        }
+//        cartRows.removeIf(c -> c.getProduct().getId() == 11110000);
+
         List<CartRow> dbProducts = orderService.getDbProducts(cartRows);
 
         double totalSum = orderService.calculateTotalSum(dbProducts);
 
-        Long orderId = orderService.saveOrder(personalCode, dbProducts, totalSum);
+        Long orderId = orderService.saveOrder(pmName, personalCode, dbProducts, totalSum);
 
         return ResponseEntity.ok().body(paymentService.getEveryPayLink(totalSum, orderId)); // PAYMENT_LINK ----> Front-end läheb sellele lingile
     }

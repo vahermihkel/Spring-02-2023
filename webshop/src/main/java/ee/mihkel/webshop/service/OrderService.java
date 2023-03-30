@@ -61,7 +61,7 @@ public class OrderService {
     }
 
     @Transactional
-    public Long saveOrder(String personalCode, List<CartRow> products, double totalSum) {
+    public Long saveOrder(String pmName, String personalCode, List<CartRow> products, double totalSum) {
         Person person = personRepository.findById(personalCode).get();
 
         Order order = new Order();
@@ -71,6 +71,7 @@ public class OrderService {
         order.setPerson(person);
         order.setCreated(new Date());
         order.setTotalSum(totalSum);
+        order.setPmName(pmName);
         return orderRepository.save(order).getId();
     }
 

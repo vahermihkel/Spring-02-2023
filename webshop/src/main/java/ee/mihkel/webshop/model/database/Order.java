@@ -39,4 +39,6 @@ public class Order { // Order ja User on reserveeritud PostgreSQL-s
 
     private double totalSum;
 
+    private String pmName;
+
 }

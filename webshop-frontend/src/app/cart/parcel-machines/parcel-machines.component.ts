@@ -38,7 +38,7 @@ export class ParcelMachinesComponent implements OnInit {
   onParcelMachineSelected() {
     sessionStorage.setItem("parcelMachine", this.selectedParcelMachine);
     this.cartProducts.push({
-    product: {id: 11110000,name:"Pakiautomaadi tasu",price:3.5,image: "assets/locker.png",category: new Category(""),description: "",active: true, stock: 1},
+    product: {id: 11110000,name:this.selectedParcelMachine,price:3.5,image: "assets/locker.png",category: new Category(""),description: "",active: true, stock: 1},
     quantity: 1
     });
     sessionStorage.setItem("cartItems", JSON.stringify(this.cartProducts));
@@ -50,7 +50,7 @@ export class ParcelMachinesComponent implements OnInit {
     this.selectedParcelMachine = "";
     sessionStorage.removeItem("parcelMachine");
     this.removeParcelMachineEvent.emit({
-      product: {id: 11110000,name:"Pakiautomaadi tasu",price:3.5,image: "assets/locker.png",category: new Category(""),description: "",active: true, stock: 1},
+      product: {id: 11110000,name:this.selectedParcelMachine,price:3.5,image: "assets/locker.png",category: new Category(""),description: "",active: true, stock: 1},
       quantity: 1
     });
   }

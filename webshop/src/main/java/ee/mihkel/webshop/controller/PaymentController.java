@@ -1,26 +1,14 @@
 package ee.mihkel.webshop.controller;
 
-import ee.mihkel.webshop.model.database.Order;
-import ee.mihkel.webshop.model.database.Person;
-import ee.mihkel.webshop.model.database.Product;
-import ee.mihkel.webshop.model.request.EverypayData;
+import ee.mihkel.webshop.model.database.CartRow;
 import ee.mihkel.webshop.model.request.EverypayResponse;
 import ee.mihkel.webshop.model.request.EverypayStatus;
-import ee.mihkel.webshop.repository.OrderRepository;
-import ee.mihkel.webshop.repository.PersonRepository;
 import ee.mihkel.webshop.service.OrderService;
 import ee.mihkel.webshop.service.PaymentService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.RestTemplate;
 
-import java.time.ZonedDateTime;
-import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -35,9 +23,11 @@ public class PaymentController {
     @PostMapping("payment/{personalCode}") // MAKSA
     public ResponseEntity<EverypayResponse> makePayment(
             @PathVariable String personalCode,
-            @RequestBody List<Product> products) {
+            @RequestBody List<CartRow> cartRows) {
 
-        List<Product> dbProducts = orderService.getDbProducts(products);
+// Map<Product, Integer> cartProducts
+
+        List<CartRow> dbProducts = orderService.getDbProducts(cartRows);
 
         double totalSum = orderService.calculateTotalSum(dbProducts);
 

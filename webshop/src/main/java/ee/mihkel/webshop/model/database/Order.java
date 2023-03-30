@@ -26,8 +26,14 @@ public class Order { // Order ja User on reserveeritud PostgreSQL-s
     @ManyToOne
     private Person person;
 
+//    @ManyToMany
+//    private List<Product> orderProducts;
+
+    // Long id;
+    // Product product;
+    // int quantity;
     @ManyToMany
-    private List<Product> orderProducts;
+    private List<CartRow> cartRow;
 
     private boolean paid;
 

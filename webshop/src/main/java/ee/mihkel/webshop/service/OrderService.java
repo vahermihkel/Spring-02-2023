@@ -1,11 +1,14 @@
 package ee.mihkel.webshop.service;
 
+import ee.mihkel.webshop.model.database.CartRow;
 import ee.mihkel.webshop.model.database.Order;
 import ee.mihkel.webshop.model.database.Person;
 import ee.mihkel.webshop.model.database.Product;
+import ee.mihkel.webshop.repository.CartRowRepository;
 import ee.mihkel.webshop.repository.OrderRepository;
 import ee.mihkel.webshop.repository.PersonRepository;
 import ee.mihkel.webshop.repository.ProductRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,37 +25,48 @@ public class OrderService {
     @Autowired
     ProductRepository productRepository;
 
+    @Autowired
+    CartRowRepository cartRowRepository;
+
     @Autowired // constructor(private http: HttpClient)
     OrderRepository orderRepository;
 
-    public List<Product> getDbProducts(List<Product> products) {
-        List<Product> dbProducts = new ArrayList<>();
-        for (Product p: products) {
-            Product dbProduct = productRepository.findById(p.getId()).get();
-            dbProducts.add(dbProduct);
+    public List<CartRow> getDbProducts(List<CartRow> products) {
+        List<CartRow> dbProducts = new ArrayList<>();
+        for (CartRow p: products) {
+            Product dbProduct = productRepository.findById(p.getProduct().getId()).get();
+            CartRow cartRow = new CartRow();
+            cartRow.setProduct(dbProduct); // <---- Uus, selle nimel seda funktsiooni teeme
+            cartRow.setQuantity(p.getQuantity());
+            dbProducts.add(cartRow);
 
-            int newStock = dbProduct.getStock()-1;
+            int newStock = dbProduct.getStock()-p.getQuantity();
             dbProduct.setStock(newStock);
         }
         return  dbProducts;
     }
 
-    public double calculateTotalSum(List<Product> products) {
+    public double calculateTotalSum(List<CartRow> products) {
         double totalSum = 0;
         // <div *ngFor="let p of products"></div>
-        for (Product p: products) {
-            totalSum += p.getPrice();
+        for (CartRow p: products) {
+            totalSum += p.getProduct().getPrice() * p.getQuantity();
         }
         // stream() - ava vool, konverteeritakse igaüks hinnaks (double kujule)
-        //totalSum = products.stream().mapToDouble(Product::getPrice).sum();
+        totalSum = products
+                        .stream()
+                        .mapToDouble(e -> e.getProduct().getPrice() * e.getQuantity())
+                        .sum();
         return totalSum;
     }
 
-    public Long saveOrder(String personalCode, List<Product> products, double totalSum) {
+    @Transactional
+    public Long saveOrder(String personalCode, List<CartRow> products, double totalSum) {
         Person person = personRepository.findById(personalCode).get();
 
         Order order = new Order();
-        order.setOrderProducts(products);
+        cartRowRepository.saveAll(products);
+        order.setCartRow(products);
         order.setPaid(false);
         order.setPerson(person);
         order.setCreated(new Date());

@@ -1,7 +1,8 @@
-import { HttpClient } from '@angular/common/http';
 import { Component, OnInit, AfterViewInit, OnDestroy, Output, EventEmitter, ViewChild } from '@angular/core';
 import { MapComponent } from './map/map.component';
 import * as L from 'leaflet';
+import { Shop } from '../models/shop.model';
+import { ShopService } from '../services/shop.service';
 
 @Component({
   selector: 'app-shops',
@@ -9,32 +10,26 @@ import * as L from 'leaflet';
   styleUrls: ['./shops.component.css']
 })
 export class ShopsComponent implements OnInit, AfterViewInit  {
-  dbUrl = "";
-  shops: {shopName: string, 
-    latitude: number, 
-    longitude: number, openTimes: string}[] = [];
+  shops: Shop[] = [];
   @ViewChild(MapComponent) mapComponent!: MapComponent;
 
-  constructor(private http: HttpClient) { }
+  constructor(private shopService: ShopService) { }
 
   ngOnInit(): void {
   }
 
   ngAfterViewInit(): void {
-    // TODO: Get images from backend
-    // this.http.get<{shopName: string, 
-    //   latitude: number, 
-    //   longitude: number, openTimes: string}[]>(this.dbUrl).subscribe(shopsFromDb => {
-    //   this.shops = shopsFromDb;
-    //   this.mapComponent.initMap();
-    //   this.mapComponent.shopsObservable.next(this.shops);
-    // });
+    this.shopService.getShopsFromDb().subscribe(shopsFromDb => {
+       this.shops = shopsFromDb;
+       this.mapComponent.initMap();
+       this.mapComponent.shopsObservable.next(this.shops);
+     });
   }
 
   onZoomShop(shopName: string) {
-    const shopFound = this.shops.find(element => element.shopName === shopName);
+    const shopFound = this.shops.find(element => element.name === shopName);
     if (shopFound) {
-      this.mapComponent.map.setView(L.latLng([shopFound.latitude, shopFound.longitude]),13);
+      this.mapComponent.map.setView(L.latLng([shopFound.latitude, shopFound.longitude]),17);
     } else {
       this.mapComponent.map.setView(L.latLng([59.4341, 24.7489]),11);
     }

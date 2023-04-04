@@ -1,7 +1,8 @@
 
  <form *ngIf="product" (ngSubmit)="onSubmit()" [formGroup] = "editProductForm">
-  <label> ID:  </label> <br>
-  <input formControlName="id" type="number"> <br>
+  <!-- <label> ID:  </label> <br>
+  <input formControlName="id" type="number"> <br> -->
+  <button type="button">?</button>
   <label> Nimi:  </label> <br>
   <input formControlName="name" type="text"> <br>
   <label> Kirjeldus:  </label> <br>
@@ -9,13 +10,13 @@
   <label> Hind:  </label> <br>
   <input formControlName="price" type="number"> <br>
   <label> Kategooria:  </label> <br>
-  <select formControlName="category">
-    <option *ngFor="let category of categories" value="{{category.categoryName}}">{{category.categoryName}}</option>
+  <select formControlName="category" required>
+    <option *ngFor="let category of categories" value="{{category.id}}">{{category.name}}</option>
   </select> <br> <br>
   <label>Image: </label> <br>
   <input formControlName="image" type="text"> <br>
   <label> Aktiivne:  </label> <br>
   <input formControlName="active" type="checkbox"> <br>
-  <button>Muuda</button> <br>
+  <button [disabled]="editProductForm.invalid" type="submit">Muuda</button> <br>
  </form>
 

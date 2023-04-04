@@ -16,21 +16,12 @@ export class CarouselSettingsComponent implements OnInit {
   constructor(private carouselPictureService: CarouselPictureService) { }
 
   ngOnInit(): void {
-    // TODO: Get images from backend
-    // this.http.get<{imgName: string}[]>(this.dbUrl).subscribe(imagesFromDb => {
-    //   this.images = imagesFromDb;
-    // });
     this.carouselPictureService.getCarouselPictures().subscribe(res => {
       this.images = res;
     })
   }
 
   onSubmit(form: NgForm) {
-    // const image = "https://picsum.photos/id/" + form.value.imgName + "/900/300";
-    // TODO : Send new image to backend
-    // this.http.post(this.dbUrl,{imgName: image}).subscribe(() => {
-    //   this.images.push({imgName: image});
-    // });
     const newCarouselPicture = new CarouselPicture(form.value.imgName);
     this.carouselPictureService.addCarouselPicture(newCarouselPicture).subscribe(res => {
       this.images = res;
@@ -38,8 +29,8 @@ export class CarouselSettingsComponent implements OnInit {
   }
 
   onDeleteImg(image: CarouselPicture) {
-    // const index = this.images.findIndex(element => element.imgName === image.imgName);
-    // this.images.splice(index,1);
-    // TODO : Delete image from backend
+    this.carouselPictureService.deleteCarouselPicture(image).subscribe((res) => {
+      this.images = res;
+    });
   }
 }

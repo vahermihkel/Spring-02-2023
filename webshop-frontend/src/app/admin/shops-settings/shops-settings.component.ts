@@ -1,6 +1,7 @@
-import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
+import { Shop } from 'src/app/models/shop.model';
+import { ShopService } from 'src/app/services/shop.service';
 
 @Component({
   selector: 'app-shops-settings',
@@ -8,25 +9,34 @@ import { NgForm } from '@angular/forms';
   styleUrls: ['./shops-settings.component.css']
 })
 export class ShopsSettingsComponent implements OnInit {
-  dbUrl = "";
-  shops: {shopName: string, 
-    latitude: number, 
-    longitude: number, openTimes: string}[] = [];
+  
+  shops: Shop[] = [];
 
-  constructor(private http: HttpClient) { }
+  constructor(private shopService: ShopService) { }
 
   ngOnInit(): void {
-    // TODO: Get shops from db
-    // this.http.get<{shopName: string, 
-    //   latitude: number, 
-    //   longitude: number, openTimes: string}[]>(this.dbUrl).subscribe(shopsFromDb => {
-    //   this.shops = shopsFromDb;
-    // });
+    this.shopService.getShopsFromDb().subscribe(res => {
+      this.shops = res;
+    });
   }
 
-  onSubmit(form: NgForm) {
-    // TODO: Add shop to db
-    // this.http.post(this.dbUrl, form.value).subscribe();
-    // this.shops.push(form.value);
+  onSubmit(addShopForm: NgForm) {
+    const newShop = new Shop(
+      addShopForm.value.name,
+      addShopForm.value.address,
+      addShopForm.value.openTime,
+      addShopForm.value.closeTime,
+      addShopForm.value.latitude,
+      addShopForm.value.longitude
+    );
+    this.shopService.addShopToDb(newShop).subscribe((res) => {
+      this.shops = res;
+    });
+  }
+
+  onDeleteShop(shop: Shop) {
+    this.shopService.deleteShopFromDb(shop).subscribe((res) => {
+      this.shops = res;
+    });
   }
 }

@@ -10,21 +10,28 @@
   <table class="table table-hover table-bordered table-sortable">
     <thead>
     <tr>
+      <th scope="col">ID</th>
       <th scope="col">Pilt</th>
       <th scope="col">Nimetus</th>
       <th scope="col">Hind</th>
       <th scope="col">Kategooria</th>
       <th scope="col">Kirjeldus</th>
+      <th scope="col">Laoseis</th>
       <th scope="col">Actions</th>
     </tr>
     </thead>
     <tbody>
 <tr *ngFor="let product of products" [ngClass]="{'active': product.active, 'inactive': !product.active}">
+    <td (click)="onChangeProductActive(product)">{{product.id}}</td>
     <td (click)="onChangeProductActive(product)"><img class="product-img" src="{{product.image}}" alt=""></td>
     <td (click)="onChangeProductActive(product)">{{product.name}}</td>
     <td (click)="onChangeProductActive(product)">{{product.price | thousandSeparator}}</td>
     <td (click)="onChangeProductActive(product)">{{product.category?.name}}</td>
     <td (click)="onChangeProductActive(product)">{{product.description | descriptionShortener:descriptionWordCount}}</td>
+    <td (click)="onChangeProductActive(product)">{{product.stock}}
+      <button (click)="onAddProductStock(product)">+</button>
+      <button (click)="onDecreaseProductStock(product)">-</button>
+    </td>
   <button routerLink="/admin/muuda/{{product.id}}">Muuda toodet</button>
 </tr>
 

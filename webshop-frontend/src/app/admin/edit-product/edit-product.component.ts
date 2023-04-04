@@ -1,8 +1,9 @@
-import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Category } from 'src/app/models/category.model';
 import { Product } from 'src/app/models/product.model';
+import { CategoryService } from 'src/app/services/category.service';
 import { ProductService } from 'src/app/services/product.service';
 
 @Component({
@@ -12,34 +13,32 @@ import { ProductService } from 'src/app/services/product.service';
 })
 export class EditProductComponent implements OnInit {
   products: Product[] = [];
-  dbUrl = "";
-  categoriesDbUrl = "";
 
   product!: Product;
   editProductForm!: FormGroup;
-  categories: {categoryName: string}[] = [];
+  categories: Category[] = [];
 
   constructor(private route: ActivatedRoute,  
-    private http: HttpClient,
     private router: Router,
-    private productService: ProductService) { } 
+    private productService: ProductService,
+    private categoryService: CategoryService) { } 
 
   ngOnInit(): void {
     const productId = this.route.snapshot.paramMap.get("productId");
     if (productId) {
       this.getProductsFromDb(productId);
+      this.getCategoriesFromDb();
     }
-    this.getCategoriesFromDb();
   }
 
   private getProductsFromDb(productId: string) {
-    this.productService.getProductsFromDb().subscribe(response => { 
+    this.productService.getAdminProductsFromDb().subscribe(response => { 
       this.products = response;
       const productFound = this.products.find(element => Number(element.id) === Number(productId));
       if (productFound) {
         this.product = productFound;
+        this.initEditForm();
       }
-      this.initEditForm();
     }); 
   }
 
@@ -57,15 +56,24 @@ export class EditProductComponent implements OnInit {
 
   private getCategoriesFromDb() {
     // TODO: Get categories from db
-    // this.http.get<{categoryName: string}[]>(this.categoriesDbUrl).subscribe(categoriesFromDb => {
-    //   this.categories = categoriesFromDb;
-    // });
+    this.categoryService.getCategoriesFromDb().subscribe(categoriesFromDb => {
+      this.categories = categoriesFromDb;
+    });
   }
 
   onSubmit() {
-    const queueNumber = this.products.indexOf(this.product);
-    this.products[queueNumber] = this.editProductForm.value;
+    // const index = this.products.indexOf(this.product);
+    // this.products[index] = this.editProductForm.value;
+    // this.product = this.editProductForm.value;
+    const val = this.editProductForm.value;
+    const newProduct = new Product(this.product.id, val.name, val.url, val.price,
+      val.description, val.active, this.product.stock, new Category("", val.category));
     // TODO: Edit product
+    this.productService.updateProduct(newProduct).subscribe(() => {
+      // this.products = res;
+      // constructoris Router --> import angular/router
+      this.router.navigateByUrl("/admin/halda");
+    });
   }
 
 }

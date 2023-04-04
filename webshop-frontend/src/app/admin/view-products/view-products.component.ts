@@ -35,4 +35,16 @@ export class ViewProductsComponent implements OnInit {
     // TODO: Edit one product from backend
   }
 
+  onAddProductStock(product: Product) {
+    this.productService.addStock(product).subscribe((res) => {
+      this.products =  res;
+    });
+  }
+
+  onDecreaseProductStock(product: Product) {
+    this.productService.decreaseStock(product).subscribe((res) => {
+      this.products =  res;
+    });
+  }
+
 }

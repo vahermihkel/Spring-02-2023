@@ -1,20 +1,23 @@
 
 <form (ngSubmit)="onSubmit(addShopForm)" #addShopForm="ngForm">
   <label>Pood</label> <br>
-  <input ngModel name="shopName" type="text"> <br>
+  <input ngModel name="name" type="text"> <br>
+  <label>Aadress</label> <br>
+  <input ngModel name="address" type="text"> <br>
   <label>Latitude</label> <br>
   <input ngModel name="latitude" type="number"> <br>
   <label>Longitude</label> <br>
   <input ngModel name="longitude" type="number"> <br>
   <label>Lahtiolekuajad</label> <br>
-  <input ngModel name="openTimes" type="text"> <br>
+  <input ngModel name="openTime" type="text"> <input ngModel name="closeTime" type="text"> <br><br>
   <button>Sisesta uus pood</button>
 </form>
 
 <div *ngFor="let shop of shops">
-  <div>{{shop.shopName}}</div>
+  <div>{{shop.name}}</div>
+  <div>{{shop.address}}</div>
   <div>{{shop.latitude}}</div>
   <div>{{shop.longitude}}</div>
-  <div>{{shop.openTimes}}</div>
-  <button>X</button>
+  <div>{{shop.openTime}} - {{shop.closeTime}}</div>
+  <button (click)="onDeleteShop(shop)">X</button>
 </div>

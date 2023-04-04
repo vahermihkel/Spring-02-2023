@@ -41,8 +41,8 @@ export class ProductService {
   }
 
   // TODO: Edit one product from backend
-  updateProduct(id: number, updatedProduct: Product): Observable<Product[]> {
-    return this.http.put<Product[]>(this.dbUrl + "/" + id, updatedProduct);
+  updateProduct(updatedProduct: Product): Observable<Product[]> {
+    return this.http.put<Product[]>(this.dbUrl, updatedProduct);
   }
 
   getAdminProductsFromDb(): Observable<Product[]> {

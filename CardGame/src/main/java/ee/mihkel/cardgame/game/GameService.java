@@ -28,6 +28,7 @@ public class GameService {
 
 
     public String savePlayer(String playerName) {
+        card = null;
         Optional<Player> playerFound = playerRepository.findById(playerName);
         if (playerFound.isEmpty()) {
             Player newPlayer = new Player(playerName, new Date(), 0);

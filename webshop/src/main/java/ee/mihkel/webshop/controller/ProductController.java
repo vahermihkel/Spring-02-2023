@@ -77,3 +77,12 @@ public class ProductController {
     }
 
 }
+
+// Ükskõik mis projekt
+// Proovitöö
+// Midagi netist
+// Youtube
+// Ise mõelda välja
+
+// 27.04    17.30-19.00   näitate mis tegite (funktsionaalsused)
+//                      huvitavamaid koodilõike

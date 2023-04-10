@@ -31,13 +31,13 @@ public class PersonController {
         return ResponseEntity.ok().body(personRepository.findAll());
     }
 
-    @PostMapping("person")
-    public ResponseEntity<List<Person>> addPerson(@RequestBody Person person) {
-        if (person.getPersonalCode() == null || personRepository.findById(person.getPersonalCode()).isEmpty()) {
-            personRepository.save(person);
-        }
-        return ResponseEntity.status(HttpStatus.CREATED).body(personRepository.findAll());
-    }
+//    @PostMapping("person")
+//    public ResponseEntity<List<Person>> addPerson(@RequestBody Person person) {
+//        if (person.getPersonalCode() == null || personRepository.findById(person.getPersonalCode()).isEmpty()) {
+//            personRepository.save(person);
+//        }
+//        return ResponseEntity.status(HttpStatus.CREATED).body(personRepository.findAll());
+//    }
 
     @PutMapping("person")
     public ResponseEntity<List<Person>> editPerson(@RequestBody Person person) {

@@ -1,9 +1,9 @@
 package ee.mihkel.webshop.model.database;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,5 +23,6 @@ public class Person {
     private String lastName;
     private String email;
     private String phone;
+    private String password;
     private boolean admin;
 }

@@ -7,6 +7,7 @@ import ee.mihkel.webshop.service.OrderService;
 import ee.mihkel.webshop.service.PaymentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Iterator;
@@ -21,11 +22,12 @@ public class PaymentController {
     @Autowired
     PaymentService paymentService;
 
-    @PostMapping("payment/{personalCode}") // MAKSA
+    @PostMapping("payment") // MAKSA
     public ResponseEntity<EverypayResponse> makePayment(
-            @PathVariable String personalCode,
+//            @PathVariable String personalCode,
             @RequestBody List<CartRow> cartRows) {
 
+        String personalCode = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
 // Map<Product, Integer> cartProducts
 
         String pmName = "";

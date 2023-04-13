@@ -22,13 +22,16 @@ import java.util.List;
 public class AuthenticationController {
 
     @Autowired
+    BCryptPasswordEncoder passwordEncoder;
+
+    @Autowired
     PersonRepository personRepository;
 
     // localhost:8080/signup    POST
     @PostMapping("signup")
     public ResponseEntity<List<Person>> addPerson(@RequestBody Person person) {
         if (person.getPersonalCode() == null || personRepository.findById(person.getPersonalCode()).isEmpty()) {
-            BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+//            BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
             String hashedPassword = passwordEncoder.encode(person.getPassword());
             person.setPassword(hashedPassword);
             personRepository.save(person);
@@ -38,7 +41,7 @@ public class AuthenticationController {
 
     @PostMapping("login")
     public ResponseEntity<Token> login(@RequestBody LoginData loginData) {
-        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+//        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
         Person person = personRepository.findPersonByEmail(loginData.getEmail());
 

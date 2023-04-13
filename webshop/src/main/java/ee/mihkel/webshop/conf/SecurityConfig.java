@@ -48,6 +48,17 @@ public class SecurityConfig {
 
 }
 
+// BCrypt - Autowired
+// JWTS - lahti pakkimine+++
+// Front-endis tokeni kaasa saatmine
+// Rollid
+// Ilusasti erroreid näidata
+// Anomaaliad
+
+// Unit testide mockid üle
+
+// 27.04 viimane kohtumine
+
 
 
 

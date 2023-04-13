@@ -16,7 +16,7 @@ public class PersonController {
     PersonRepository personRepository;
 
     @GetMapping("person")
-    public ResponseEntity<List<Person>> getCategories() {
+    public ResponseEntity<List<Person>> getPersons() {
         return ResponseEntity.ok().body(personRepository.findAll());
     }
 

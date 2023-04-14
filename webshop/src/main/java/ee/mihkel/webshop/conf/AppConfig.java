@@ -34,6 +34,7 @@ public class AppConfig {
                 registry.addMapping("/**")
                         .allowedOrigins("http://localhost:4200")
                         .allowedMethods("GET", "POST", "DELETE", "PUT", "PATCH");
+//                        .allowedHeaders("*");
             }
         };
     }

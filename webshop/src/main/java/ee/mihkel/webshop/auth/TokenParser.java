@@ -6,6 +6,8 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.stereotype.Component;
@@ -15,6 +17,10 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 @Component
 @Log4j2
@@ -34,7 +40,7 @@ public class TokenParser extends BasicAuthenticationFilter {
         System.out.println(header);
         log.info(header);
 
-        if (header != null && !header.startsWith("Bearer ")) {
+        if (header != null && header.startsWith("Bearer ")) {
             header = header.replace("Bearer ", "");
             try {
                 Claims claims = Jwts.parser()
@@ -43,12 +49,21 @@ public class TokenParser extends BasicAuthenticationFilter {
                         .getBody();
 
                 String personalCode = claims.getSubject();
+
+                String role = claims.getId();
+
+                List<GrantedAuthority> authorities = new ArrayList<>();
+                if (role != null && role.equals("admin")) {
+                    SimpleGrantedAuthority authority = new SimpleGrantedAuthority("admin");
+                    authorities = new ArrayList<>(Collections.singletonList(authority));
+                }
+
+                Authentication authentication = new UsernamePasswordAuthenticationToken(
+                        personalCode,null, authorities
+                );
                 // ÜTLEME, ET MUUTUJA HEADER SEES TULEB TOKEN. SEEGA JÄRGNEVALT
                 // TOIMUB TOKENI LAHTIPAKKIMINE, ET SAADA TEADA SEALT SEEST NT ISIKUKOOD
                 // SIIN PANEME ISIKUKOODI AUTHENTICATION SISSE
-                Authentication authentication = new UsernamePasswordAuthenticationToken(
-                        personalCode,null, null
-                );
 //
 //        // SIIN PANEME SELLE ISIKU GLOBAALSELT SISSELOGITUKS
                 SecurityContextHolder.getContext().setAuthentication(authentication);

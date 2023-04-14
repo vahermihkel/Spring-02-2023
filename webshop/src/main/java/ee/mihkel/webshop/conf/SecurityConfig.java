@@ -28,7 +28,9 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
-        httpSecurity.csrf().disable()
+        httpSecurity
+                .cors().and().headers().xssProtection().disable().and()
+                .csrf().disable()
                 .authorizeHttpRequests()
                 .antMatchers("/signup").permitAll()
                 .antMatchers("/login").permitAll()
@@ -38,6 +40,10 @@ public class SecurityConfig {
                 .antMatchers("/getshops").permitAll()
                 .antMatchers("/getshop/**").permitAll()
                 .antMatchers("/parcelmachines/**").permitAll()
+                .antMatchers("/admin-products").hasAuthority("admin")
+                .antMatchers(HttpMethod.POST,"/product/**").hasAuthority("admin")
+                .antMatchers(HttpMethod.PUT,"/product/**").hasAuthority("admin")
+                .antMatchers(HttpMethod.DELETE,"/product/**").hasAuthority("admin")
                 .anyRequest().authenticated()
                 .and().sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
@@ -48,11 +54,12 @@ public class SecurityConfig {
 
 }
 
-// BCrypt - Autowired
+// BCrypt - Autowired+++
 // JWTS - lahti pakkimine+++
-// Front-endis tokeni kaasa saatmine
-// Rollid
-// Ilusasti erroreid näidata
+// Front-endis tokeni kaasa saatmine+++
+// Ilusasti erroreid näidata+++
+// Rollid+++
+
 // Anomaaliad
 
 // Unit testide mockid üle

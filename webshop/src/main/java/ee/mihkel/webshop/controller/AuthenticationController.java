@@ -1,5 +1,6 @@
 package ee.mihkel.webshop.controller;
 
+import ee.mihkel.webshop.controller.exceptions.FailedException;
 import ee.mihkel.webshop.model.database.Person;
 import ee.mihkel.webshop.model.request.LoginData;
 import ee.mihkel.webshop.model.request.Token;
@@ -40,21 +41,22 @@ public class AuthenticationController {
     }
 
     @PostMapping("login")
-    public ResponseEntity<Token> login(@RequestBody LoginData loginData) {
+    public ResponseEntity<Token> login(@RequestBody LoginData loginData) throws FailedException {
 //        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
         Person person = personRepository.findPersonByEmail(loginData.getEmail());
 
+        if (person == null) {
+            throw new FailedException("Username not valid " + loginData.getEmail());
+        }
+
         if (!passwordEncoder.matches(loginData.getPassword(), person.getPassword())) {
-            return ResponseEntity.badRequest().body(null);
+            throw new FailedException("Password not valid " + loginData.getEmail());
         }
 
         Token token = new Token();
-
         LocalDateTime now = LocalDateTime.now();
-
         LocalDateTime oneHourLater = now.plusHours(1);
-
         Date dateOneHourLater = java.util.Date.from(oneHourLater.atZone(java.time.ZoneId.systemDefault()).toInstant());
 
         String jwtsToken = Jwts.builder()
@@ -62,6 +64,7 @@ public class AuthenticationController {
                 .setExpiration(dateOneHourLater)
                 .setIssuer("mihkel-webshop")
                 .setSubject(person.getPersonalCode())
+                .setId(person.isAdmin() ? "admin" : "")
                 .compact();
 
         token.setToken(jwtsToken);

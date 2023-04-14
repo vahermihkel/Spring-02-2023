@@ -5,6 +5,7 @@ import { AuthService } from '../auth.service';
 
 import {FormControl, FormGroupDirective, NgForm, Validators} from '@angular/forms';
 import {ErrorStateMatcher} from '@angular/material/core';
+import { HttpClient } from '@angular/common/http';
 
 export class MyErrorStateMatcher implements ErrorStateMatcher {
   isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
@@ -27,16 +28,24 @@ export class LoginComponent implements OnInit {
 
   constructor(
     private router: Router,
-    private authService: AuthService
+    private authService: AuthService,
+    private http: HttpClient
   ) { }
 
   ngOnInit(): void {
   }
 
   onLogin(loginForm: NgForm) {
-    this.router.navigateByUrl("/admin");
-    sessionStorage.setItem("token", "123");
-    this.authService.loggedInChanged.next(true);
+    this.http.post<{token: string}>("http://localhost:8080/login", 
+    {
+      "email": this.emailFormControl.value,
+      "password": loginForm.value.password
+    }).subscribe(res => {
+      this.router.navigateByUrl("/admin");
+      sessionStorage.setItem("token", res.token);
+      this.authService.loggedInChanged.next(true);
+    })
+
     // if (!loginForm.valid) {
     //   return;
     // }

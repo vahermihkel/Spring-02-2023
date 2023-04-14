@@ -1,20 +1,20 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, map, Observable, tap } from 'rxjs';
 import { Product } from '../models/product.model';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ProductService {
-  dbUrl: string = "http://localhost:8080/product";
+  dbUrl: string = 'http://localhost:8080/product';
   cartChanged = new BehaviorSubject(true);
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
   getProductsFromDb() {
     return this.http.get<any>(this.dbUrl).pipe(
-      map(response => {
+      map((response) => {
         return response.content;
       })
     );
@@ -30,14 +30,14 @@ export class ProductService {
 
   // TODO: Delete product from backend
   deleteProduct(product: Product) {
-    return this.http.delete(this.dbUrl + "/" + product.id);
+    return this.http.delete(this.dbUrl + '/' + product.id);
   }
 
   // TODO: Get one product from backend
   // public Observable<Product> getOneProducr(int id) {}
   // Observable - tema külge on võimalik Subscribe-da
   getOneProduct(id: number): Observable<Product> {
-    return this.http.get<Product>(this.dbUrl + "/" + id);
+    return this.http.get<Product>(this.dbUrl + '/' + id);
   }
 
   // TODO: Edit one product from backend
@@ -46,14 +46,30 @@ export class ProductService {
   }
 
   getAdminProductsFromDb(): Observable<Product[]> {
-    return this.http.get<Product[]>("http://localhost:8080/admin-products");
+    const headers = {
+      headers: new HttpHeaders({
+        Authorization:
+          'Bearer ' + sessionStorage.getItem("token"),
+      }),
+    };
+
+    return this.http.get<Product[]>(
+      'http://localhost:8080/admin-products',
+      headers
+    );
   }
 
   addStock(product: Product): Observable<Product[]> {
-    return this.http.patch<Product[]>("http://localhost:8080/add-stock/" + product.id, {});
+    return this.http.patch<Product[]>(
+      'http://localhost:8080/add-stock/' + product.id,
+      {}
+    );
   }
 
   decreaseStock(product: Product): Observable<Product[]> {
-    return this.http.patch<Product[]>("http://localhost:8080/decrease-stock/" + product.id, {});
+    return this.http.patch<Product[]>(
+      'http://localhost:8080/decrease-stock/' + product.id,
+      {}
+    );
   }
 }
